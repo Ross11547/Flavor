@@ -1,0 +1,157 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model usuario {
+  id       Int      @id @default(autoincrement())
+  nombre   String
+  rol      String
+  telefono Int
+  correo   String   @unique
+  password String
+  estado   Boolean
+  venta    venta[]
+  compra   compra[]
+}
+
+model cliente {
+  nit                Int     @id @unique
+  nombre             String
+  telefono           Int
+  correo             String
+  direccion          String
+  puntosFidelizacion Int?
+  venta              venta[]
+}
+
+model categoria {
+  id          Int        @id @default(autoincrement())
+  nombre      String
+  descripcion String
+  producto    producto[]
+}
+
+model proveedor {
+  id          Int      @id @default(autoincrement())
+  nombre      String
+  contacto    String
+  stockMinimo Int
+  telefono    Int
+  correo      String
+  direccion   String
+  compra      compra[]
+}
+
+model ingrediente {
+  id                  Int                   @id @default(autoincrement())
+  nombre              String
+  descripcion         String
+  stockActual         Int
+  unidadMedida        String
+  precioUnitario      Decimal
+  estado              Boolean
+  ingredienteproducto ingredienteProducto[]
+  detalleCompra       detalleCompra[]
+}
+
+model insumo {
+  id             Int             @id @default(autoincrement())
+  nombre         String
+  descripcion    String
+  stockActual    Int
+  unidadMedida   String
+  precioUnitario Decimal
+  estado         Boolean
+  detalleCompra  detalleCompra[]
+}
+
+model sucursal {
+  id        Int    @id @default(autoincrement())
+  nombre    String
+  telefono  Int
+  correo    String
+  dereccion String
+}
+
+model venta {
+  id           Int            @id @default(autoincrement())
+  fechaVenta   DateTime
+  totalVenta   Int
+  metodoPago   String
+  descuento    Int?
+  tipoVenta    String
+  idCliente    Int
+  cliente      cliente        @relation(fields: [idCliente], references: [nit])
+  idUsuario    Int
+  usuario      usuario        @relation(fields: [idUsuario], references: [id])
+  detalleVenta detalleVenta[]
+}
+
+model producto {
+  id                  Int                   @id @default(autoincrement())
+  nombre              String
+  precioVenta         Decimal
+  stockActual         Int
+  StockMinimo         Int
+  unidadMedida        String
+  estado              Boolean
+  idCategoria         Int
+  categoria           categoria             @relation(fields: [idCategoria], references: [id])
+  ingredienteproducto ingredienteProducto[]
+  detalleVenta        detalleVenta[]
+}
+
+model ingredienteProducto {
+  id                  Int         @id @default(autoincrement())
+  cantidadIngrediente Decimal
+  idIngrediente       Int
+  ingrediente         ingrediente @relation(fields: [idIngrediente], references: [id])
+  idProducto          Int
+  producto            producto    @relation(fields: [idProducto], references: [id])
+}
+
+model detalleVenta {
+  id             Int      @id @default(autoincrement())
+  cantidad       Int
+  precioUnitario Int
+  subTotal       Int
+  idVenta        Int
+  venta          venta    @relation(fields: [idVenta], references: [id])
+  idProducto     Int
+  producto       producto @relation(fields: [idProducto], references: [id])
+}
+
+model compra {
+  id            Int             @id @default(autoincrement())
+  fechaCompra   DateTime
+  totalCompra   Int
+  idUsuario     Int
+  usuario       usuario         @relation(fields: [idUsuario], references: [id])
+  idProveedor   Int
+  proveedor     proveedor       @relation(fields: [idProveedor], references: [id])
+  detalleCompra detalleCompra[]
+}
+
+model detalleCompra {
+  id             Int          @id @default(autoincrement())
+  cantidad       Int
+  precioUnitario Int
+  subTotal       Int
+  idCompra       Int
+  compra         compra       @relation(fields: [idCompra], references: [id])
+  idIngrediente  Int
+  ingrediente    ingrediente? @relation(fields: [idIngrediente], references: [id])
+  idInsumo       Int
+  insumo         insumo?      @relation(fields: [idInsumo], references: [id])
+}

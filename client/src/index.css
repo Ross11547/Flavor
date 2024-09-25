@@ -1,0 +1,16 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+
+}
+
+:root {
+  --primary100: #ff6f61;
+  --primary200: #1a1a1a;
+  --primary300: #ffffff;
+  --primary400: #f4f4f4;
+}
