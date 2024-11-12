@@ -1,13 +1,15 @@
-import React from 'react'
-import styled from 'styled-components'
-const Button = ({ onclick, name }) => {
-  return (
-    <LoginButton onclick={onclick}>{name}</LoginButton>
-  )
-}
+import React from 'react';
+import styled from 'styled-components';
 
-export default Button
-export const LoginButton = styled.button`
+const Button = ({ onClick, name }) => {
+  return (
+    <LoginButton onClick={onClick}>{name}</LoginButton> // Cambiado a onClick
+  );
+};
+
+export default Button;
+
+const LoginButton = styled.button`
   width: 100%;
   padding: 10px;
   background-color: #EA88AB;

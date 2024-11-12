@@ -156,6 +156,16 @@ CREATE TABLE "detalleCompra" (
     CONSTRAINT "detalleCompra_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "insumoSucursal" (
+    "id" SERIAL NOT NULL,
+    "stockActual" INTEGER NOT NULL,
+    "idSucursal" INTEGER NOT NULL,
+    "idInsumo" INTEGER NOT NULL,
+
+    CONSTRAINT "insumoSucursal_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "usuario_correo_key" ON "usuario"("correo");
 
@@ -197,3 +207,9 @@ ALTER TABLE "detalleCompra" ADD CONSTRAINT "detalleCompra_idIngrediente_fkey" FO
 
 -- AddForeignKey
 ALTER TABLE "detalleCompra" ADD CONSTRAINT "detalleCompra_idInsumo_fkey" FOREIGN KEY ("idInsumo") REFERENCES "insumo"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "insumoSucursal" ADD CONSTRAINT "insumoSucursal_idSucursal_fkey" FOREIGN KEY ("idSucursal") REFERENCES "sucursal"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "insumoSucursal" ADD CONSTRAINT "insumoSucursal_idInsumo_fkey" FOREIGN KEY ("idInsumo") REFERENCES "insumo"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

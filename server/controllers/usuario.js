@@ -130,6 +130,43 @@ app.put("/usuario/:id", async (req, res) => {
   }
 });
 
+app.post("/login", async (req, res) => {
+  try {
+    const { correo, password } = req.body;
+    const usuario = await prisma.usuario.findUnique({
+      where: {
+        correo: correo
+      }
+    });
+
+    if (!usuario) {
+      return res.status(404).json({
+        mensaje: "Usuario no encontrado"
+      });
+    }
+    if (usuario.password !== password) {
+      return res.status(401).json({
+        mensaje: "Contraseña incorrecta"
+      });
+    }
+    res.json({
+      data: {
+        id: usuario.id,
+        nombre: usuario.nombre,
+        rol: usuario.rol
+      },
+      mensaje: "Inicio de sesión exitoso"
+    });
+  } catch (error) {
+    res.status(500).json({
+      mensaje: "Error al iniciar sesión",
+      error: error.message
+    });
+  }
+});
+
+
+
 app.delete("/usuario/:id", async (req, res) => {
   try {
     const usuario = await prisma.usuario.delete({
@@ -147,6 +184,36 @@ app.delete("/usuario/:id", async (req, res) => {
     res.status(500).json({
       mensaje: "Error al eliminar usuario",
       error: error.mensaje
+    });
+  }
+});
+app.post("/login", async (req, res) => {
+  const { correo, password } = req.body;
+  try {
+    const usuario = await prisma.usuario.findUnique({
+      where: {
+        correo: correo,
+      },
+    });
+
+    if (usuario && usuario.password === password) {
+      // Excluir la contraseña de la respuesta
+      const { password, ...usuarioSinPassword } = usuario;
+
+      res.json({
+        data: usuarioSinPassword,
+        mensaje: "Login exitoso",
+      });
+    } else {
+      // Usuario no encontrado o contraseña incorrecta
+      res.status(401).json({
+        mensaje: "Correo o contraseña incorrectos",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      mensaje: "Error al intentar el login",
+      error: error.message,
     });
   }
 });

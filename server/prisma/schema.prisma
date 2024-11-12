@@ -66,7 +66,7 @@ model ingrediente {
 }
 
 model insumo {
-  id             Int             @id @default(autoincrement())
+  id             Int              @id @default(autoincrement())
   nombre         String
   descripcion    String
   stockActual    Int
@@ -74,14 +74,16 @@ model insumo {
   precioUnitario Decimal
   estado         Boolean
   detalleCompra  detalleCompra[]
+  insumoSucursal insumoSucursal[]
 }
 
 model sucursal {
-  id        Int    @id @default(autoincrement())
-  nombre    String
-  telefono  Int
-  correo    String
-  dereccion String
+  id             Int              @id @default(autoincrement())
+  nombre         String
+  telefono       Int
+  correo         String
+  dereccion      String
+  insumoSucursal insumoSucursal[]
 }
 
 model venta {
@@ -154,4 +156,13 @@ model detalleCompra {
   ingrediente    ingrediente? @relation(fields: [idIngrediente], references: [id])
   idInsumo       Int
   insumo         insumo?      @relation(fields: [idInsumo], references: [id])
+}
+
+model insumoSucursal {
+  id          Int      @id @default(autoincrement())
+  stockActual Int
+  idSucursal  Int
+  sucursal    sucursal @relation(fields: [idSucursal], references: [id])
+  idInsumo    Int
+  insumo      insumo?  @relation(fields: [idInsumo], references: [id])
 }

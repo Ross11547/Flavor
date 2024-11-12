@@ -1,16 +1,21 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import { HashRouter } from 'react-router-dom';
+import AppRoutes from './routes';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ToastContainer } from 'react-toastify';
 
-import Login from './pages/login'
-import { HashRouter } from 'react-router-dom'
-import Routes from './routes'
-
+const queryClient = new QueryClient();
 function App() {
   return (
     <>
-      <Login />
+      <ToastContainer />
+      <QueryClientProvider client={queryClient}>
+        <HashRouter>
+          <AppRoutes />
+        </HashRouter>
+      </QueryClientProvider>
     </>
-
-  )
+  );
 }
 
-export default App
+export default App;

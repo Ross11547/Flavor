@@ -1,16 +1,23 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Colors } from '../../style/colors'
-const Input = ({ title, value, placeholder, onchange, type }) => {
-    return (
-        <>
-            <Label>{title}</Label>
-            <InputStyled type={type} placeholder={placeholder ? placeholder : title} />
-        </>
-    )
+
+const Input = ({ title, value, placeholder, onChange, type = "text" }) => {
+  return (
+    <>
+      <Label>{title}</Label>
+      <InputStyled
+        type={type}
+        placeholder={placeholder || title}
+        value={value}
+        onChange={onChange}
+      />
+    </>
+  );
 }
 
-export default Input
+export default Input;
+
 const InputStyled = styled.input`
   width: 100%;
   padding: 10px;
@@ -22,13 +29,13 @@ const InputStyled = styled.input`
   height: 40px;
   font-weight: 700;
   color: ${Colors.gray200};
-    &::placeholder{
-    color:${Colors.gray200};
+  
+  &::placeholder {
+    color: ${Colors.gray200};
     font-weight: 700;
-
-}
-
+  }
 `;
+
 export const Label = styled.label`
   font-size: 18px;
   font-weight: 700;
