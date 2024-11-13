@@ -1,20 +1,22 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Colors } from '../../style/colors'
+import React from 'react';
+import styled from 'styled-components';
+import { Colors } from '../../style/colors';
 
-const Input = ({ title, value, placeholder, onChange, type = "text" }) => {
+const Input = ({ title, value, placeholder, onChange, type = "text", name, disabled }) => {
   return (
     <>
       <Label>{title}</Label>
       <InputStyled
         type={type}
+        name={name}            // Agregar el atributo name
         placeholder={placeholder || title}
         value={value}
         onChange={onChange}
+        disabled={disabled}    // Agregar el atributo disabled
       />
     </>
   );
-}
+};
 
 export default Input;
 
@@ -33,6 +35,11 @@ const InputStyled = styled.input`
   &::placeholder {
     color: ${Colors.gray200};
     font-weight: 700;
+  }
+
+  &:disabled {
+    background-color: #f0f0f0; // Cambiar el fondo cuando está deshabilitado
+    cursor: not-allowed;
   }
 `;
 

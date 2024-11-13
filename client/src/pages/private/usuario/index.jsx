@@ -6,7 +6,7 @@ import FormUsuario from "./components/formUsuario";
 import styled from "styled-components";
 
 const Usuario = () => {
-  const { data, loading, reload } = useGet("usuario");
+  const { data, reload } = useGet("usuario");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const handleAdd = () => {
