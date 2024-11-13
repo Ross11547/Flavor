@@ -8,7 +8,7 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <>
-      <ToastContainer />
+      
       <QueryClientProvider client={queryClient}>
         <HashRouter>
           <AppRoutes />

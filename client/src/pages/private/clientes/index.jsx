@@ -2,8 +2,10 @@ import React from 'react'
 import PageContainer from '../../../components/ui/pageContainer'
 import TableContainer from '../../../components/ui/table/tableContainer'
 import { clientJson } from '../../../data/clientJson'
+import useGet from '../../../hook/useGet'
 
 const Cliente = () => {
+  const {data}=useGet("cliente")
   return (
     <PageContainer tittle={"Clientes"}>
       <TableContainer
@@ -12,7 +14,7 @@ const Cliente = () => {
       edit={{}}
       del={{}}
       reload={() => { }}
-      data={clientJson}
+      data={data.data}
       columns={[
         {
           id: "id",

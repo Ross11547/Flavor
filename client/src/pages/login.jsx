@@ -37,13 +37,13 @@ const Login = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        if (!validateForm()) return;
+     /*    if (!validateForm()) return;
         if (correo === mockUser.email && password === mockUser.password) {
-            toastSuccess("¡Inicio de sesión exitoso!");
+            toastSuccess("¡Inicio de sesión exitoso!"); */
             navigate(ROUTES.DASHBOARD);
-        } else {
+       /*  } else {
             toastError("Credenciales incorrectas");
-        }
+        } */
     };
 
     return (

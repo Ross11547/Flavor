@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const useGet = (url, options = {}) => {
     const {
-        initialState = null,
+        initialState = [],
         headers = {},
         autoFetch = true,
         timeout = 5000,
@@ -23,7 +23,7 @@ const useGet = (url, options = {}) => {
 
     const fetchWithRetry = async (retriesLeft) => {
         try {
-            const response = await axios.get(url, {
+            const response = await axios.get("http://localhost:3000/"+url, {
                 headers,
                 timeout
             });

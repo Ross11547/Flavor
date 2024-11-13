@@ -26,7 +26,7 @@ const TableContainer = ({
   const tableRef = useRef(null);
 
   return (
-    <Container className="flex-1 flex flex-col overflow-auto">
+    <Container >
       <TableControls
         tableCurrentRef={tableRef.current}
         loading={!data}
@@ -39,7 +39,7 @@ const TableContainer = ({
         button={button}
         disableButtons={disableButtons}
       />
-      <TablContainer className="flex flex-1 overflow-auto w-full">
+      <TablContainer >
         {data ? (
           data.length > 0 ? (
             <TanstackTable

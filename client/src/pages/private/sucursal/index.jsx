@@ -1,18 +1,20 @@
-import React from 'react'
-import PageContainer from '../../../components/ui/pageContainer';
-import TableContainer from '../../../components/ui/table/tableContainer';
-import { sucuJson } from '../../../data/sucujason';
+import React from "react";
+import PageContainer from "../../../components/ui/pageContainer";
+import TableContainer from "../../../components/ui/table/tableContainer";
+import { sucuJson } from "../../../data/sucujason";
+import useGet from "../../../hook/useGet";
 
 const Sucursal = () => {
+  const { data } = useGet("sucursal");
   return (
     <PageContainer tittle={"Sucursales"}>
       <TableContainer
-        add={() => { }}
+        add={() => {}}
         onClickRow={{}}
         edit={{}}
         del={{}}
-        reload={() => { }}
-        data={sucuJson}
+        reload={() => {}}
+        data={data.data}
         columns={[
           {
             id: "id",
@@ -30,10 +32,11 @@ const Sucursal = () => {
           {
             header: "Dirección",
             accessorFn: (row) => row.direccion,
-          }
-        ]} />
+          },
+        ]}
+      />
     </PageContainer>
-  )
-}
+  );
+};
 
 export default Sucursal;

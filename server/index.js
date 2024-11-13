@@ -13,6 +13,7 @@ const ingredienteProdu = require("./controllers/ingredienteProdu");
 const detalleVenta = require("./controllers/detalleVenta");
 const compra = require("./controllers/compra");
 const detalleCompra = require("./controllers/detalleCompra");
+const categoria = require("./controllers/categoria");
 
 const app = express();
 const port = 3000;
@@ -36,6 +37,7 @@ app.use(producto);
 app.use(ingredienteProdu);
 app.use(detalleVenta);
 app.use(compra);
+app.use(categoria);
 app.use(detalleCompra);
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
