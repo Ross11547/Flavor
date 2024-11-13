@@ -8,11 +8,11 @@ const Input = ({ title, value, placeholder, onChange, type = "text", name, disab
       <Label>{title}</Label>
       <InputStyled
         type={type}
-        name={name}            // Agregar el atributo name
+        name={name}            
         placeholder={placeholder || title}
         value={value}
         onChange={onChange}
-        disabled={disabled}    // Agregar el atributo disabled
+        disabled={disabled}    
       />
     </>
   );
@@ -38,7 +38,7 @@ const InputStyled = styled.input`
   }
 
   &:disabled {
-    background-color: #f0f0f0; // Cambiar el fondo cuando está deshabilitado
+    background-color: #f0f0f0; 
     cursor: not-allowed;
   }
 `;
