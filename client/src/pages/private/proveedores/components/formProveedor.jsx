@@ -3,27 +3,25 @@ import styled from "styled-components";
 import { Eye, EyeOff } from "lucide-react";
 import toast from "react-hot-toast";
 
-const FormUsuario = ({ onClose, userData }) => {
+const FormProveedor = ({ onClose, userData }) => {
   const [formData, setFormData] = useState({
     nombre: "",
-    rol: "",
+    contacto: "",
     telefono: "",
     correo: "",
-    password: "",
-    estado: false,
+    stockMinimo: "",
+    direccion: "",
   });
-
-  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (userData) {
       setFormData({
         nombre: userData.nombre || "",
-        rol: userData.rol || "",
+        contacto: userData.contacto || "",
         telefono: userData.telefono || "",
         correo: userData.correo || "",
-        password: "",
-        estado: userData.estado || false,
+        stockMinimo: userData.stockMinimo || "",
+        direccion: userData.direccion || "",
       });
     }
   }, [userData]);
@@ -41,12 +39,13 @@ const FormUsuario = ({ onClose, userData }) => {
 
     const method = userData ? "PUT" : "POST";
     const url = userData
-      ? `http://localhost:3000/usuario/${userData.id}`
-      : "http://localhost:3000/usuario";
+      ? `http://localhost:3000/proveedor/${userData.id}`
+      : "http://localhost:3000/proveedor";
 
     const formDataToSend = {
       ...formData,
       telefono: Number(formData.telefono),
+      stockMinimo: Number(formData.stockMinimo),
     };
 
     try {
@@ -64,11 +63,11 @@ const FormUsuario = ({ onClose, userData }) => {
         onClose();
         setFormData({
           nombre: "",
-          rol: "",
+          contacto: "",
           telefono: "",
           correo: "",
-          password: "",
-          estado: false,
+          stockMinimo: "",
+          direccion: "",
         });
       } else {
         toast.error("Ocurrió un error al guardar los datos");
@@ -83,7 +82,7 @@ const FormUsuario = ({ onClose, userData }) => {
     <PageContainer>
       <FormCard>
         <FormTitle>
-          {userData ? "Editar Usuario" : "Registrar Usuario"}
+          {userData ? "Editar Proveedor" : "Registrar Proveedor"}
         </FormTitle>
         <StyledForm onSubmit={handleSubmit}>
           <FormGroup>
@@ -98,16 +97,25 @@ const FormUsuario = ({ onClose, userData }) => {
           </FormGroup>
 
           <FormGroup>
-            <Label>Rol</Label>
+            <Label>contacto</Label>
             <Input
               type="text"
-              name="rol"
-              value={formData.rol}
+              name="contacto"
+              value={formData.contacto}
               onChange={handleChange}
               required
             />
           </FormGroup>
-
+          <FormGroup>
+            <Label>Cantidad minima</Label>
+            <Input
+              type="number"
+              name="cantidad minima"
+              value={formData.stockMinimo}
+              onChange={handleChange}
+              
+            />
+          </FormGroup>
           <FormGroup>
             <Label>Teléfono</Label>
             <Input
@@ -129,38 +137,18 @@ const FormUsuario = ({ onClose, userData }) => {
               required
             />
           </FormGroup>
-
-          {!userData && (
-            <FormGroup>
-              <Label>Contraseña</Label>
-              <PasswordWrapper>
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  required
-                />
-                <PasswordToggle
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                </PasswordToggle>
-              </PasswordWrapper>
-            </FormGroup>
-          )}
-
-          <CheckboxGroup>
-            <CheckboxInput
-              type="checkbox"
-              name="estado"
-              checked={formData.estado}
+          <FormGroup>
+            <Label>Direccion</Label>
+            <Input
+              type="text"
+              name="direccion"
+              value={formData.direccion}
               onChange={handleChange}
+              required
             />
-            <CheckboxLabel>Activo</CheckboxLabel>
-          </CheckboxGroup>
+          </FormGroup>
 
+      
           <SubmitButton type="submit">
             {userData ? "Actualizar" : "Registrar"}
           </SubmitButton>
@@ -170,7 +158,7 @@ const FormUsuario = ({ onClose, userData }) => {
   );
 };
 
-export default FormUsuario;
+export default FormProveedor;
 
 const PageContainer = styled.div`
   height: 90vh;

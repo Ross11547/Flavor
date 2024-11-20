@@ -54,7 +54,6 @@ const Nav = () => {
             <NavItem to={ROUTES.DASHBOARD} theme={Colors}>
               <Icon><FaHome /></Icon> Inicio
             </NavItem>
-
             <NavItem theme={Colors} onClick={toggleContactoMenu}>
               <Icon><HiPhone /></Icon> Contactos
               <ParentIcon>

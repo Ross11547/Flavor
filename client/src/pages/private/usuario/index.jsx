@@ -4,27 +4,49 @@ import TableContainer from "../../../components/ui/table/tableContainer";
 import useGet from "../../../hook/useGet";
 import FormUsuario from "./components/formUsuario";
 import styled from "styled-components";
+import useDelete from "../../../hook/useDelete";
+
 
 const Usuario = () => {
   const { data, reload } = useGet("usuario");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
+  const {
+    deleteItem,
+    loading: deleting,
+    error,
+    deleted,
+  } = useDelete("usuario");
+  const [selectedUser, setSelectedUser] = useState(null);
   const handleAdd = () => {
+    setSelectedUser(null);
     setIsDrawerOpen(true);
   };
 
   const handleCloseDrawer = () => {
     setIsDrawerOpen(false);
+    setSelectedUser([]);
     reload();
   };
-
+  const handleDelete = (id) => {
+    deleteItem(id);
+    if (deleted) {
+      reload();
+    }
+  };
+  const handleEdit = (user) => {
+    setSelectedUser(user);
+    setIsDrawerOpen(true);
+  };
   return (
     <PageContainer tittle={"Usuarios"}>
       <TableContainer
         add={handleAdd}
         onClickRow={{}}
-        edit={{}}
-        del={{}}
+        edit={{ fn: (row) => handleEdit(row) }}
+        del={{
+          fn: (row) => handleDelete(row.id),
+          disabled: (row) => row.estado === false,
+        }}
         reload={reload}
         data={data.data}
         columns={[
@@ -47,12 +69,12 @@ const Usuario = () => {
           },
         ]}
       />
-      {/* El Overlay ahora está fuera del Drawer */}
       {isDrawerOpen && <Overlay onClick={handleCloseDrawer} />}
       <Drawer isOpen={isDrawerOpen}>
         <DrawerContent>
           <CloseButton onClick={handleCloseDrawer}>&times;</CloseButton>
-          <FormUsuario onClose={handleCloseDrawer} />
+          <FormUsuario onClose={handleCloseDrawer} 
+          userData={selectedUser} />
         </DrawerContent>
       </Drawer>
     </PageContainer>

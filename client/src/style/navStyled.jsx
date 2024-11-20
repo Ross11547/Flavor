@@ -1,11 +1,11 @@
-import styled from 'styled-components';
-import { Colors } from '../style/colors';
-import { Link } from 'react-router-dom';
+import styled from "styled-components";
+import { Colors } from "../style/colors";
+import { Link } from "react-router-dom";
 
 export const DivButtonNav = styled.div`
   position: fixed;
   top: 20px;
-  left: ${({ visible }) => (visible ? '240px' : '20px')};
+  left: ${({ visible }) => (visible ? "240px" : "20px")};
   z-index: 1000;
   transition: all 0.5s ease-in-out;
 `;
@@ -21,7 +21,7 @@ export const BottonNav = styled.button`
   justify-content: center;
   cursor: pointer;
   color: ${Colors.secundary100};
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease-in-out;
 
   &:hover {
@@ -40,20 +40,20 @@ export const ContainerPadre = styled.div`
 
 export const NavContainer = styled.nav`
   width: 280px;
-   display:${({ visible }) => (visible ? '0' : '-280px')};
- 
-background: ${Colors.primary300};
-  padding: 20px; 
+  display: ${({ visible }) => (visible ? "0" : "-280px")};
+  background: ${Colors.primary300};
+  padding: 20px;
   border-radius: 0 50px 50px 0;
   box-shadow: 2px 0 10px ${Colors.gray100};
   transition: all 0.5s ease-in-out;
 `;
 
 export const ScrollContainer = styled.div`
-  overflow-y: auto;
-  padding-right: 10px;
+  height: 100%;
+  overflow-y: scroll;
+
   &::-webkit-scrollbar {
-    width: 6px;
+    width: 0px;
   }
   &::-webkit-scrollbar-track {
     background: ${Colors.primary300};
@@ -156,7 +156,7 @@ export const SubMenuItem = styled.a`
   text-decoration: none;
   color: ${Colors.secundary100};
   transition: all 0.3s ease-in-out;
-  
+
   &:hover {
     background-color: ${Colors.secundary100};
     color: ${Colors.primary300};
@@ -174,5 +174,4 @@ export const ParentIcon = styled.span`
 export const DivOutlet = styled.div`
   width: calc(100vw - 250px);
   padding: 20px;
-
 `;
