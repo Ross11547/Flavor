@@ -8,8 +8,7 @@ app.get("/categoria", async (req, res) => {
   try {
     const categoria = await prisma.categoria.findMany();
     if (categoria) {
-      res,
-        json({
+      res.json({
           data: categoria,
           mensaje: "Categorias obtenidos correctamente",
         });

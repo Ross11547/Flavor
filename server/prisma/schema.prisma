@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,7 +11,7 @@ model usuario {
   id       Int      @id @default(autoincrement())
   nombre   String
   rol      String
-  telefono Int
+  telefono String
   correo   String   @unique
   password String
   estado   Boolean
@@ -23,7 +22,7 @@ model usuario {
 model cliente {
   nit                Int     @id @unique
   nombre             String
-  telefono           Int
+  telefono           String
   correo             String
   direccion          String
   puntosFidelizacion Int?
@@ -41,8 +40,7 @@ model proveedor {
   id          Int      @id @default(autoincrement())
   nombre      String
   contacto    String
-  stockMinimo Int
-  telefono    Int
+  telefono    String
   correo      String
   direccion   String
   compra      compra[]
@@ -75,7 +73,7 @@ model insumo {
 model sucursal {
   id             Int              @id @default(autoincrement())
   nombre         String
-  telefono       Int
+  telefono       String
   correo         String
   dereccion      String
   insumoSucursal insumoSucursal[]

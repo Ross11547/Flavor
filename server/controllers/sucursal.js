@@ -46,18 +46,11 @@ app.get("/sucursal/:id", async (req, res) => {
 
 app.post("/sucursal", async (req, res) => {
     try {
-        const { nombre, telefono, correo, direccion } = req.body;
+        const { nombre, telefono, correo, dereccion } = req.body;
 
-        if (!nombre || !direccion) {
+        if (!nombre || !dereccion) {
             res.json({
                 mensaje: "Los campos nombre y dirección son obligatorios.",
-            });
-            return;
-        }
-
-        if (telefono < 10000000 || telefono > 99999999) {
-            res.json({
-                mensaje: "El teléfono debe ser un número válido de 8 dígitos.",
             });
             return;
         }
@@ -74,7 +67,7 @@ app.post("/sucursal", async (req, res) => {
                 nombre,
                 telefono,
                 correo,
-                direccion,
+                dereccion,
             },
         });
         res.json({

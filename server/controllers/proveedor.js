@@ -44,28 +44,15 @@ app.get('/proveedor/:id', async (req, res) => {
 
 app.post("/proveedor", async (req, res) => {
     try {
-        const { nombre, descripcion, stockMinimo, telefono, correo, direccion } = req.body;
+        const { nombre, contacto, telefono, correo, direccion } = req.body;
 
-        if (!nombre || !descripcion || !correo || !direccion) {
+        if (!nombre || !contacto || !correo || !direccion) {
             res.json({
                  mensaje: "Este campo es obligatorio." 
                 });
             return;
         }
 
-        if (telefono < 10000000 || telefono > 99999999) {
-            res.json({
-                mensaje: "El teléfono debe ser un número válido con exactamente 8 dígitos."
-            });
-            return;
-        }
-
-        if (stockMinimo < 30 || stockMinimo > 300) {
-            res.json({
-                mensaje: "El stock mínimo debe ser mayor a 30 y menor que 300."
-            });
-            return;
-        }
 
         const correoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!correoValido.test(correo)) {
@@ -77,8 +64,7 @@ app.post("/proveedor", async (req, res) => {
         const provCreado = await prisma.proveedor.create({
             data: {
                 nombre,
-                descripcion,
-                stockMinimo,
+                contacto,
                 telefono,
                 correo,
                 direccion

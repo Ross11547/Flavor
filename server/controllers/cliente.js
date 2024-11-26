@@ -47,13 +47,6 @@ app.post("/cliente", async (req, res) => {
     try {
         const { nit, nombre, telefono, correo, direccion, puntosFidelizacion } = req.body;
 
-        if (nit >= 1000000 || nit <= 9999999) {
-            res.json({
-                mensaje: "El nit debe tener mínimo 7 dígitos y máximo 9 dígitos"
-            });
-            return;
-        }
-
         if (nombre === '' || direccion === '') {
             res.json({
                 mensaje: "Este campo es obligatorio"
@@ -134,7 +127,7 @@ app.put('/cliente/:nit', async (req, res) => {
 
 app.delete('/cliente/:nit', async (req, res) => {
     try {
-        const cliente = await prisma.cliente.update({
+        const cliente = await prisma.cliente.delete({
             where:{
                 nit: Number(req.params.nit)
             },
