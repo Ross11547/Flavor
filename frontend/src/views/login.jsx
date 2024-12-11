@@ -58,7 +58,7 @@ const Login = () => {
       const data = await response.json();
       toast.success(data.message);
       login(data);
-      navigate("/usuarios");
+      navigate("/inicio");
     } catch (err) {
       console.error(err);
       setError("Credenciales inválidas. Inténtalo de nuevo.");

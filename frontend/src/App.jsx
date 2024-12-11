@@ -20,6 +20,7 @@ import Perfil from "./views/private/perfil";
 import Venta from "./views/private/ventas";
 import Factura from "./views/private/factura";
 import Pedido from "./views/private/pedidos";
+import Inicio from "./views/private/inicio";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
             <Route path="/ventas" element={<Venta />} />
             <Route path="/facturas" element={<Factura />} />
             <Route path="/pedidos" element={<Pedido />} />
+            <Route path="/inicio" element={<Inicio />} />
 
             <Route path="/productos" element={<Producto />} />
             <Route path="/compras" element={<Compra />} />
