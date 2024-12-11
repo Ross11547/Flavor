@@ -64,7 +64,7 @@ model insumo {
   descripcion    String
   stockActual    Int
   unidadMedida   String
-  precioUnitario Decimal
+  precioUnitario Float
   estado         Boolean
   detalleCompra  detalleCompra[]
   insumoSucursal insumoSucursal[]
@@ -96,9 +96,9 @@ model venta {
 model producto {
   id                  Int                   @id @default(autoincrement())
   nombre              String
-  precioVenta         Decimal
+  precioVenta         Float
   stockActual         Int
-  StockMinimo         Int
+  stockMinimo         Int
   unidadMedida        String
   estado              Boolean
   idCategoria         Int
@@ -109,7 +109,7 @@ model producto {
 
 model ingredienteProducto {
   id                  Int         @id @default(autoincrement())
-  cantidadIngrediente Decimal
+  cantidadIngrediente Int
   idIngrediente       Int
   ingrediente         ingrediente @relation(fields: [idIngrediente], references: [id])
   idProducto          Int
@@ -119,7 +119,7 @@ model ingredienteProducto {
 model detalleVenta {
   id             Int      @id @default(autoincrement())
   cantidad       Int
-  precioUnitario Int
+  precioUnitario Float
   subTotal       Int
   idVenta        Int
   venta          venta    @relation(fields: [idVenta], references: [id])

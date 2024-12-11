@@ -16,6 +16,10 @@ import Sucursal from "./views/private/sucursal";
 import Cliente from "./views/private/cliente";
 import Categoria from "./views/private/categoria";
 import Insumo from "./views/private/insumo";
+import Perfil from "./views/private/perfil";
+import Venta from "./views/private/ventas";
+import Factura from "./views/private/factura";
+import Pedido from "./views/private/pedidos";
 
 function App() {
   return (
@@ -31,12 +35,16 @@ function App() {
             <Route path="/clientes" element={<Cliente />} />
             <Route path="/categorias" element={<Categoria />} />
             <Route path="/insumos" element={<Insumo />} />
+            <Route path="/ventas" element={<Venta />} />
+            <Route path="/facturas" element={<Factura />} />
+            <Route path="/pedidos" element={<Pedido />} />
 
             <Route path="/productos" element={<Producto />} />
             <Route path="/compras" element={<Compra />} />
             <Route path="/almacen" element={<Almacen />} />
             <Route path="/tareas" element={<Tareas />} />
             <Route path="/ingresos" element={<RegistroIngresos />} />
+            <Route path="/perfil" element={<Perfil />} />
           </Route>
         </Routes>
       </UserProvider>

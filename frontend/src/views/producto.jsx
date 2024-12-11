@@ -36,28 +36,24 @@ import { useGet } from "../hook/useGet";
 import { usePost } from "../hook/usePost";
 import { useUpdate } from "../hook/usePut";
 import { useDelete } from "../hook/useDelete";
-import { fechaActual } from "../utils/dateDay";
-import { CloseButton, Form, Modal, ModalContent } from "../style/tareaStyled";
-import { useUser } from "../context/useContext";
+
 const Producto = () => {
-  const { user } = useUser();
   const [searchTerm, setSearchTerm] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [quantity, setQuantity] = useState(1);
-  const { postData: postCocina } = usePost("crear-pedido");
-
   const [currentData, setCurrentData] = useState(null);
   const [form, setForm] = useState({
     nombre: "",
-    descripcion: "",
-    precio: "",
-    stock: "",
-    categoria: "",
-    fecha_registro: fechaActual,
+    precioVenta: "",
+    stockActual: "",
+    stockMinimo: "",
+    unidadMedida: "",
+    estado: true,
+    idCategoria: "",
   });
+
   const { data: producto, reload } = useGet("producto");
+  const { data: categoria } = useGet("categoria");
+
   const { postData } = usePost("producto");
   const { updateData } = useUpdate("producto");
   const { deleteData } = useDelete("producto");
@@ -66,10 +62,12 @@ const Producto = () => {
     if (currentData) {
       setForm({
         nombre: currentData.nombre,
-        descripcion: currentData.descripcion,
-        precio: currentData.precio,
-        stock: currentData.stock,
-        categoria: currentData.categoria,
+        precioVenta: currentData.precioVenta,
+        stockActual: currentData.stockActual,
+        stockMinimo: currentData.stockMinimo,
+        unidadMedida: currentData.unidadMedida,
+        estado: currentData.estado,
+        idCategoria: currentData.idCategoria,
       });
     }
   }, [currentData]);
@@ -78,29 +76,8 @@ const Producto = () => {
     const { name, value } = e.target;
     setForm({
       ...form,
-      [name]: value,
+      [name]: name === "estado" ? e.target.checked : value,
     });
-  };
-  const exportToPDF = () => {
-    const doc = new jsPDF();
-    doc.autoTable({
-      head: [["ID", "Nombre", "Descripcion", "Precio", "Stock", "Categoria"]],
-      body: producto.map((item) => [
-        item.id,
-        item.nombre,
-        item.descripcion,
-        item.precio,
-        item.stock,
-        item.categoria,
-      ]),
-    });
-    doc.save("productos.pdf");
-  };
-  const exportToExcel = () => {
-    const ws = XLSX.utils.json_to_sheet(producto);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Productos");
-    XLSX.writeFile(wb, "productos.xlsx");
   };
 
   const handleSubmit = async (e) => {
@@ -109,6 +86,7 @@ const Producto = () => {
       await updateData(currentData.id, form);
       reload();
     } else {
+      console.log(form);
       await postData(form);
       reload();
     }
@@ -116,31 +94,21 @@ const Producto = () => {
     setCurrentData(null);
     setForm({
       nombre: "",
-      descripcion: "",
-      precio: "",
-      stock: "",
-      categoria: "",
-      fecha_registro: fechaActual,
+      precioVenta: "",
+      stockActual: "",
+      stockMinimo: "",
+      unidadMedida: "",
+      estado: true,
+      idCategoria: "",
     });
   };
-  const handleSendToAlmacen = async () => {
-    if (selectedProduct) {
-      await postCocina({
-        usuario: user.data.id,
-        producto: selectedProduct.id,
-        cantidad: quantity,
-        estado: "listo",
-      });
-      setShowModal(false);
-      setQuantity(1);
-      reload();
-    }
-  };
+
   const handleDelete = async (id) => {
     await deleteData(id);
     reload();
   };
-  const filteredItems = producto?.filter((item) =>
+
+  const filteredItems = producto?.data?.filter((item) =>
     item.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -159,14 +127,6 @@ const Producto = () => {
           </SearchContainer>
 
           <ButtonGroup>
-            <Button variant="secondary" onClick={exportToPDF}>
-              <FilePen size={20} />
-              PDF
-            </Button>
-            <Button variant="secondary" onClick={exportToExcel}>
-              <FileSpreadsheet size={20} />
-              Excel
-            </Button>
             <Button variant="primary" onClick={() => setIsFormOpen(true)}>
               <Plus size={20} />
               Agregar
@@ -178,11 +138,13 @@ const Producto = () => {
             <tr>
               <Th>ID</Th>
               <Th>Nombre</Th>
-              <Th>Descripcion</Th>
-              <Th>Precio</Th>
-              <Th>Cantidad</Th>
-              <Th>Categoria</Th>
-              <Th>acciones</Th>
+              <Th>Precio Venta</Th>
+              <Th>Stock Actual</Th>
+              <Th>Stock Mínimo</Th>
+              <Th>Unidad de Medida</Th>
+              <Th>Estado</Th>
+              <Th>Categoría</Th>
+              <Th>Acciones</Th>
             </tr>
           </thead>
           <tbody>
@@ -190,10 +152,12 @@ const Producto = () => {
               <tr key={i}>
                 <Td>{i + 1}</Td>
                 <Td>{item.nombre}</Td>
-                <Td>{item.descripcion}</Td>
-                <Td>{item.precio} Bs</Td>
-                <Td>{item.stock}</Td>
-                <Th>{item.categoria}</Th>
+                <Td>{item.precioVenta} Bs</Td>
+                <Td>{item.stockActual}</Td>
+                <Td>{item.stockMinimo}</Td>
+                <Td>{item.unidadMedida}</Td>
+                <Td>{item.estado ? "Activo" : "Inactivo"}</Td>
+                <Td>{item.idCategoria}</Td>
                 <Td>
                   <ActionButtons>
                     <Button
@@ -211,15 +175,6 @@ const Producto = () => {
                     >
                       <Trash2 size={16} />
                     </Button>
-                    <Button
-                      variant="primary"
-                      onClick={() => {
-                        setSelectedProduct(item);
-                        setShowModal(true);
-                      }}
-                    >
-                      Enviar almacén <ArrowUp size={16} />
-                    </Button>
                   </ActionButtons>
                 </Td>
               </tr>
@@ -227,45 +182,6 @@ const Producto = () => {
           </tbody>
         </Table>
       </TableContainer>
-      {showModal && (
-        <Modal>
-          <ModalContent>
-            <button
-              style={{
-                background: "none",
-                border: "none",
-                fontSize: "1.5rem",
-                position: "absolute",
-                top: "10px",
-                right: "10px",
-                cursor: "pointer",
-              }}
-              onClick={() => setShowModal(false)}
-            >
-              <X />
-            </button>
-            <h2 style={{ marginBottom: "20px" }}>
-              Enviar al almacén: {selectedProduct?.nombre}
-            </h2>
-            <h3 style={{ marginBottom: "20px" }}>
-              Cantidad: {selectedProduct?.stock}
-            </h3>
-            <div style={{ marginBottom: "20px" }}>
-              <Label>Cantidad a enviar</Label>
-              <Input
-                type="number"
-                min="1"
-                value={quantity}
-                onChange={(e) => setQuantity(parseInt(e.target.value, 10))}
-                placeholder="Ingrese cantidad"
-              />
-            </div>
-            <Button variant="primary" onClick={handleSendToAlmacen}>
-              Enviar
-            </Button>
-          </ModalContent>
-        </Modal>
-      )}
       <FormContainer isOpen={isFormOpen}>
         <FormHeader>
           <FormTitle>
@@ -293,44 +209,68 @@ const Producto = () => {
             />
           </FormGroup>
           <FormGroup>
-            <Label>Descripcion</Label>
-            <Input
-              type="text"
-              name="descripcion"
-              value={form.descripcion}
-              onChange={handleChange}
-              placeholder="Descripcion"
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label>Precio</Label>
-            <Input
-              type="text"
-              name="precio"
-              value={form.precio}
-              onChange={handleChange}
-              placeholder="Precio"
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label>Cantidad</Label>
+            <Label>Precio Venta</Label>
             <Input
               type="number"
-              name="stock"
-              value={form.stock}
+              name="precioVenta"
+              value={form.precioVenta}
               onChange={handleChange}
-              placeholder="Cantidad"
+              placeholder="Precio Venta"
             />
           </FormGroup>
           <FormGroup>
-            <Label>Categoria</Label>
+            <Label>Stock Actual</Label>
+            <Input
+              type="number"
+              name="stockActual"
+              value={form.stockActual}
+              onChange={handleChange}
+              placeholder="Stock Actual"
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label>Stock Mínimo</Label>
+            <Input
+              type="number"
+              name="stockMinimo"
+              value={form.stockMinimo}
+              onChange={handleChange}
+              placeholder="Stock Mínimo"
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label>Unidad de Medida</Label>
             <Input
               type="text"
-              name="categoria"
-              value={form.categoria}
+              name="unidadMedida"
+              value={form.unidadMedida}
               onChange={handleChange}
-              placeholder="Categoria"
+              placeholder="Unidad de Medida"
             />
+          </FormGroup>
+          <FormGroup>
+            <Label>Estado</Label>
+            <input
+              type="checkbox"
+              name="estado"
+              checked={form.estado}
+              onChange={handleChange}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label>Categoría</Label>
+            <InputSelect
+              name="idCategoria"
+              value={form.idCategoria}
+              onChange={handleChange}
+            >
+              <option value="">Seleccione una categoría</option>
+              {categoria?.data?.map((v, i) => (
+                <option key={i} value={v.id}>
+                  {v.nombre}
+                </option>
+              ))}
+            </InputSelect>
           </FormGroup>
           <ButtonGroup>
             <Button type="submit" variant="primary">

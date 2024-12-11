@@ -58,8 +58,7 @@ const menuItems = [
     title: "Configuración",
     icon: Settings,
     subItems: [
-      { title: "Perfil", icon: Contact, path: "/perfil" },
-      { title: "Reportes", icon: BarChart, path: "/reportes" },
+      { title: "Perfil", icon: Contact, path: "/perfil" }
     ],
   },
 ];
@@ -134,7 +133,7 @@ const Nav = () => {
           ))}
         </MenuSection>
 
-        <LogoutButton to="/logout">
+        <LogoutButton to="/">
           <LogOut size={20} />
           <span>Cerrar Sesión</span>
         </LogoutButton>

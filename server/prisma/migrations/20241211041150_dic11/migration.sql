@@ -99,7 +99,7 @@ CREATE TABLE "venta" (
 CREATE TABLE "producto" (
     "id" SERIAL NOT NULL,
     "nombre" TEXT NOT NULL,
-    "precioVenta" DECIMAL(65,30) NOT NULL,
+    "precioVenta" INTEGER NOT NULL,
     "stockActual" INTEGER NOT NULL,
     "StockMinimo" INTEGER NOT NULL,
     "unidadMedida" TEXT NOT NULL,
@@ -112,7 +112,7 @@ CREATE TABLE "producto" (
 -- CreateTable
 CREATE TABLE "ingredienteProducto" (
     "id" SERIAL NOT NULL,
-    "cantidadIngrediente" DECIMAL(65,30) NOT NULL,
+    "cantidadIngrediente" INTEGER NOT NULL,
     "idIngrediente" INTEGER NOT NULL,
     "idProducto" INTEGER NOT NULL,
 

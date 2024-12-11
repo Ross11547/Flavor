@@ -32,11 +32,9 @@ import {
   Th,
 } from "../../../style/styleCrud";
 import { useGet } from "../../../hook/useGet";
-import { formatFecha } from "../../../utils/formatDate";
 import { usePost } from "../../../hook/usePost";
 import { useUpdate } from "../../../hook/usePut";
 import { useDelete } from "../../../hook/useDelete";
-import { fechaActual } from "../../../utils/dateDay";
 const Insumo = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -69,10 +67,10 @@ const Insumo = () => {
   }, [currentData]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setForm({
       ...form,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     });
   };
   const exportToPDF = () => {
@@ -110,20 +108,22 @@ const Insumo = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const payload = {
+      ...form,
+      stockActual: parseInt(form.stockActual, 10), // Asegúrate de que sea un número entero
+      precioUnitario: parseFloat(form.precioUnitario), // Asegúrate de que sea un número decimal
+      estado: form.estado === true || form.estado === "true", // Asegúrate de que sea booleano
+    };
     if (currentData) {
-      await updateData(currentData.id, form);
+      await updateData(currentData.id, payload);
       reload();
     } else {
       console.log({
         ...form,
         stockActual: parseInt(form.stockActual, 50),
-        precioUnitario: parseFloat(form.precioUnitario, 50),
+        unidadMedida: parseFloat(form.unidadMedida, 50),
       });
-      await postData({
-        ...form,
-        stockActual: parseInt(form.stockActual, 50),
-        precioUnitario: parseFloat(form.precioUnitario, 50),
-      });
+      await postData(payload);
       reload();
     }
     setIsFormOpen(false);
@@ -196,7 +196,7 @@ const Insumo = () => {
                 <Td>{item.descripcion}</Td>
                 <Td>{item.stockActual}</Td>
                 <Td>{item.unidadMedida}</Td>
-                <Td>{item.precioUnitario}</Td>
+                <Td>{item.precioUnitario} Bs</Td>
                 <Th>{item.estado ? "Activo" : "No esta activo"}</Th>
                 <Td>
                   <ActionButtons>
@@ -260,23 +260,33 @@ const Insumo = () => {
             />
           </FormGroup>
           <FormGroup>
-            <Label>Cantidad</Label>
+            <Label>Cantidad actual</Label>
             <Input
               type="number"
               name="stockActual"
               value={form.stockActual}
               onChange={handleChange}
-              placeholder="Cantidad"
+              placeholder="Cantidad actual"
             />
           </FormGroup>
           <FormGroup>
-            <Label>Precio</Label>
+            <Label>Unidad de medida</Label>
+            <Input
+              type="text"
+              name="unidadMedida"
+              value={form.unidadMedida}
+              onChange={handleChange}
+              placeholder="Unidad de medida"
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label>Precio unitario</Label>
             <Input
               type="number"
               name="precioUnitario"
               value={form.precioUnitario}
               onChange={handleChange}
-              placeholder="Precio"
+              placeholder="Precio unitario"
             />
           </FormGroup>
           <FormGroup>
